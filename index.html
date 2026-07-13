@@ -297,19 +297,23 @@
                 this.baseX += this.speedX; this.baseY += this.speedY;
                 if (this.baseX < 0 || this.baseX > canvas.width) this.speedX *= -1;
                 if (this.baseY < 0 || this.baseY > canvas.height) this.speedY *= -1;
+
+                let targetX = this.baseX;
+                let targetY = this.baseY;
+
                 if (mouse.x != null && mouse.y != null) {
-                    let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY;
+                    let dx = mouse.x - this.baseX;
+                    let dy = mouse.y - this.baseY;
                     let distance = Math.hypot(dx, dy);
                     if (distance < mouse.radius) {
                         let force = (mouse.radius - distance) / mouse.radius;
                         let angle = Math.atan2(dy, dx);
-                        let targetX = this.baseX - Math.cos(angle) * force * 35;
-                        let targetY = this.baseY - Math.sin(angle) * force * 35;
-                        this.x += (targetX - this.x) * 0.1; this.y += (targetY - this.y) * 0.1;
-                        return;
+                        targetX = this.baseX - Math.cos(angle) * force * 45;
+                        targetY = this.baseY - Math.sin(angle) * force * 45;
                     }
                 }
-                this.x += (this.baseX - this.x) * 0.08; this.y += (this.baseY - this.y) * 0.08;
+                this.x += (targetX - this.x) * 0.08;
+                this.y += (targetY - this.y) * 0.08;
             }
             draw() {
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -320,25 +324,32 @@
 
         class Spark {
             constructor(x, y) {
-                this.x = x; this.y = y; this.size = Math.random() * 2.5 + 1.5;
-                this.speedX = (Math.random() - 0.5) * 2.2; 
-                this.speedY = (Math.random() - 0.5) * 2.2;
-                this.alpha = 1; 
+                this.x = x; this.y = y;
+                this.maxSize = Math.random() * 3 + 2;
+                this.size = this.maxSize;
+                this.speedX = (Math.random() - 0.5) * 2.5;
+                this.speedY = (Math.random() - 0.5) * 2.5;
+                this.alpha = 1;
+                this.life = 1;
+                this.decay = Math.random() * 0.015 + 0.012;
             }
-            update() { 
-                this.x += this.speedX; 
-                this.y += this.speedY; 
-                this.speedX *= 0.96;
-                this.speedY *= 0.96;
-                this.alpha -= 0.018; 
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                this.speedX *= 0.97; this.speedY *= 0.97;
+                this.life -= this.decay;
+                this.alpha = this.life;
+                this.size = this.maxSize * this.life;
+                if (this.size < 0) this.size = 0;
             }
             draw() {
+                if (this.alpha <= 0) return;
                 ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.shadowBlur = 12; ctx.shadowColor = '#ff8800'; ctx.fillStyle = '#ffbb00';
+                ctx.shadowBlur = 15; ctx.shadowColor = '#ff8800'; ctx.fillStyle = '#ffbb00';
                 ctx.fill(); ctx.restore();
             }
         }
+
 
         function initParticles() {
             particles = [];
