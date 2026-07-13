@@ -323,7 +323,6 @@
             margin-bottom: 20px;
             width: 100%;
         }
-
         .modal-search {
             width: 100%;
             background: rgba(0, 0, 0, 0.4);
@@ -336,21 +335,17 @@
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-
-        .modal-search:focus {
-            border-color: rgba(255, 170, 0, 0.6);
         .modal-search:focus {
             border-color: rgba(255, 170, 0, 0.6);
             box-shadow: 0 0 15px rgba(255, 136, 0, 0.2);
         }
-
         .modal-search::placeholder {
             color: #4b5563;
         }
-
         .mod-item.hidden {
             display: none !important;
         }
+
     </style>
 </head>
 <body>
@@ -669,6 +664,113 @@
         };
 
         renderSite();
+        function openModsModal() {
+            document.getElementById('mod-search-input').value = '';
+            filterMods();
+            document.getElementById('mods-modal').classList.add('active');
+        }
+
+        function closeModsModal() {
+            document.getElementById('mods-modal').classList.remove('active');
+        }
+
+        window.addEventListener('click', (e) => {
+            const m = document.getElementById('mods-modal');
+            if (e.target === m) closeModsModal();
+        });
+
+        function filterMods() {
+            const input = document.getElementById('mod-search-input').value.toLowerCase().trim();
+            if (!input) {
+                document.querySelectorAll('#modal-mods-list .mod-item').forEach(item => item.classList.remove('hidden'));
+                return;
+            }
+
+            const enLayout = "qwertyuiop[]asdfghjkl;'zxcvbnm,.";
+            const ruLayout = "йцукенгшщзхъфывапролджэячсмитьбю";
+            
+            let switchedLayout = "";
+            for (let char of input) {
+                const ruIdx = ruLayout.indexOf(char);
+                const enIdx = enLayout.indexOf(char);
+                if (ruIdx !== -1) {
+                    switchedLayout += enLayout[ruIdx];
+                } else if (enIdx !== -1) {
+                    switchedLayout += ruLayout[enIdx];
+                } else {
+                    switchedLayout += char;
+                }
+            }
+
+            const translitMap = {
+                'содиум': 'sodium', 'литиум': 'lithium', 'индиум': 'indium', 'ферриткор': 'ferritecore',
+                'модернфикс': 'modernfix', 'криптон': 'krypton', 'иммедиатлифаст': 'immediatelyfast',
+                'тредтвик': 'threadtweak', 'моркаллинг': 'more culling', 'энхансед': 'enhanced',
+                'меморилик': 'memory leak', 'лэнгвидж': 'language', 'ризис': 'reese', 'натриум': 'natrium',
+                'атлант': 'athena', 'бедпатч': 'bad packets', 'бедоптимизейшн': 'badoptimizations',
+                'клот': 'cloth', 'клампс': 'clumps', 'ццме': 'ccme', 'конективити': 'connectivity',
+                'айрис': 'iris', 'спарк': 'spark', 'альманак': 'almanac', 'дебагифай': 'debugify'
+            };
+
+            const items = document.querySelectorAll('#modal-mods-list .mod-item');
+            items.forEach(item => {
+                const name = item.querySelector('.mod-name').textContent.toLowerCase();
+                const desc = item.querySelector('.mod-desc').textContent.toLowerCase();
+                
+                let isMatch = name.includes(input) || desc.includes(input) || name.includes(switchedLayout) || desc.includes(switchedLayout);
+                
+                for (let rusKeyword in translitMap) {
+                    if ((input.includes(rusKeyword) || switchedLayout.includes(rusKeyword)) && name.includes(translitMap[rusKeyword])) {
+                        isMatch = true;
+                    }
+                }
+                
+                if (isMatch) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        function renderSite() {
+            document.getElementById('site-title').innerText = NATRIUM_CONFIG.texts.title;
+            document.getElementById('site-subtitle').innerText = NATRIUM_CONFIG.texts.subtitle;
+
+            const versionsContainer = document.getElementById('versions-container');
+            versionsContainer.innerHTML = NATRIUM_CONFIG.versions.map(v => `
+                <div class="card">
+                    <span class="card-title">NATRIUM</span>
+                    <span class="card-version">Версия 1.20.1</span>
+                    <span class="file-type">${v.fileType}</span>
+                    <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
+                    <button class="btn-mods" onclick="openModsModal()">Список модов</button>
+                </div>
+            `).join('');
+
+            const socialsContainer = document.getElementById('socials-container');
+            socialsContainer.innerHTML = NATRIUM_CONFIG.socials.map(s => `
+                <a href="${s.url}" target="_blank" class="pill-button">
+                    ${s.text} <span>${s.span}</span>
+                </a>
+            `).join('');
+
+            const modalModsList = document.getElementById('modal-mods-list');
+            modalModsList.innerHTML = NATRIUM_CONFIG.mods.map(m => `
+                <div class="mod-item">
+                    <div class="mod-name">${m.name}</div>
+                    <div class="mod-desc">${m.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        renderSite();
+        resizeCanvas(); 
+        animate();
+    </script>
+</body>
+</html>
+
         resizeCanvas(); 
         animate();
     </script>
