@@ -411,7 +411,6 @@
             const baseSubtitle = NATRIUM_CONFIG.texts.subtitle;
             document.getElementById('site-subtitle').innerHTML = `<span style="color: #ffaa00; font-weight: 700;">${greeting}</span><br style="margin-bottom: 6px;">${baseSubtitle}`;
         }
-        setInterval(updateTime, 1000); updateTime();
 
         // Анимация Canvas
         const canvas = document.getElementById('atom-canvas');
@@ -699,8 +698,12 @@
         }
 
         renderSite();
-        resizeCanvas(); 
+        resizeCanvas();
         animate();
+
+        // Запускаем часы только здесь, когда весь конфиг уже железно загружен в память!
+        setInterval(updateTime, 1000);
+        updateTime();
     </script>
 </body>
 </html>
