@@ -428,7 +428,7 @@
                 { text: "Наш Telegram-чат:", span: "@JavaFixerChat", url: "https://t.meChat" },
                 { text: "Нашли баг или краш? Пишите в бота:", span: "@JavaFixerTEXbot", url: "https://t.meTEXbot" }
             ],
-            mods: [
+            mods1_20_1: [
                 { name: "Almanac", desc: "Улучшенная интеграция и управление внутриигровой документацией." },
                 { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна, снижающая лаги от схем." },
                 { name: "Athena", desc: "Инструмент для создания комплексных, динамических и соединенных текстур." },
@@ -445,7 +445,7 @@
                 { name: "EntityCulling", desc: "Пропускает рендеринг невидимых мобов и сундуков за стенами, колоссально разгружая видеокарту." },
                 { name: "Fabric API", desc: "Основная библиотека-ядро для совместимости и работы модов на платформе Fabric." },
                 { name: "FastAnim", desc: "Оптимизация просчета анимаций сущностей, разгружающая центральный процессор." },
-                { name: "FerriteCore", desc: "Экстремальное сокращение потребления оперативной памяти за счет сжатия данных." },
+                { name: "FerriteCore", desc: "Экстремальное收藏щение потребления оперативной памяти за счет сжатия данных." },
                 { name: "Gpu memory leak fix mod", desc: "Патч, полностью блокирующий утечки памяти в видеокарте." },
                 { name: "ImmediatelyFast", desc: "Глобальное ускорение рендеринга шрифтов, HUD, частиц и плоских элементов." },
                 { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
@@ -468,6 +468,32 @@
                 { name: "Very Many Players", desc: "Оптимизация сетевого кода для плавной игры на серверах с кучей игроков." },
                 { name: "YetAnotherConfigLib", desc: "Современная библиотека слоев конфигурации, необходимая для графических утилит." },
                 { name: "cupboard", desc: "Оптимизированное фоновое ядро-библиотека для ускорения работы скриптов." }
+            ],
+            mods1_16_5: [
+                { name: "Alternate Current", desc: "Глубокая оптимизация алгоритмов редстоуна, снижающая лаги от схем." },
+                { name: "Borderless Mining", desc: "Перевод игры в режим полноэкранного окна без рамок для удобного переключения окон." },
+                { name: "CleanCut", desc: "Позволяет бить мобов сквозь траву, паутину и другие несплошные блоки." },
+                { name: "Crash Assistant", desc: "Помощник при крашах, предоставляющий чистые логи для диагностики ошибок." },
+                { name: "Cull Leaves", desc: "Оптимизация рендеринга листвы деревьев, увеличивающая FPS в лесных биомах." },
+                { name: "Dynamic FPS", desc: "Снижает нагрузку на видеокарту до минимума, когда игра свернута." },
+                { name: "Enhanced Block Entities", desc: "Переводит рендеринг сундуков и блоков на движок Sodium, поднимая FPS." },
+                { name: "EntityCulling-Fabric", desc: "Пропускает рендеринг невидимых мобов и сундуков за стенами, разгружая видеокарту." },
+                { name: "Fabric API", desc: "Основная библиотека-ядро для совместимости и работы модов на платформе Fabric." },
+                { name: "FerriteCore", desc: "Экстремальное сокращение потребления оперативной памяти за счет сжатия данных." },
+                { name: "Indium", desc: "Адаптер для поддержки сторонних графических модов на движке Sodium." },
+                { name: "Iris", desc: "Самый быстрый и современный движок шейдеров с полной поддержкой Sodium." },
+                { name: "Krypton", desc: "Оптимизация сетевого стека, снижающая пинг и нагрузку на трафик." },
+                { name: "LazyDFU", desc: "Оптимизация DataFixerUpper, ускоряющая запуск игры и снижающая потребление RAM на старте." },
+                { name: "Let Me Despawn", desc: "Улучшает очистку ненужных мобов на расстоянии, освобождая тики процессора." },
+                { name: "Lithium", desc: "Ультимативная оптимизация физики, ИИ мобов и механик игрового мира." },
+                { name: "Memory Leak Fix", desc: "Автоматическое вычисление и зачистка утечек RAM в клиенте игры." },
+                { name: "Mod Menu", desc: "Удобный и чистый интерфейс для просмотра и настройки установленных модов." },
+                { name: "ModernFix", desc: "Революционная оптимизация структур данных, ускоряющая запуск игры в разы." },
+                { name: "Packet Fixer", desc: "Исправляет вылеты при передаче слишком больших пакетов данных на серверах." },
+                { name: "Phosphor", desc: "Оптимизация ванильного движка освещения, уменьшающая фризы при генерации чанков." },
+                { name: "Reese's Sodium Options", desc: "Удобный и красивый интерфейс для расширенных графических настроек." },
+                { name: "Sodium", desc: "Главный движок оптимизации графики и рендеринга чанков в Майнкрафте." },
+                { name: "Sodium Extra", desc: "Дополнительные тумблеры оптимизации (анимации, частицы, облака)." }
             ]
         };
 
@@ -484,7 +510,6 @@
         function filterMods() {
             let query = document.getElementById('mods-search').value.toLowerCase().trim();
             
-            // Проверка по словарю транслита
             if (SMART_TRANSLIT[query]) {
                 query = SMART_TRANSLIT[query];
             } else {
@@ -520,7 +545,7 @@
                     <span class="card-version">Версия ${v.versionNum}</span>
                     <span class="file-type">${v.fileType}</span>
                     <a href="${v.link}" download="${v.fileName}" class="btn-download">Скачать сборку</a>
-                    <button class="btn-mods" onclick="openModsModal()">Список модов</button>
+                    <button class="btn-mods" onclick="openModsModal('${v.versionNum}')">Список модов</button>
                 </div>
             `).join('');
 
@@ -530,14 +555,6 @@
                     ${s.text} <span>${s.span}</span>
                 </a>
             `).join('');
-
-            const modalModsList = document.getElementById('modal-mods-list');
-            modalModsList.innerHTML = NATRIUM_CONFIG.mods.map(m => `
-                <div class="mod-item">
-                    <div class="mod-name">${m.name}</div>
-                    <div class="mod-desc">${m.desc}</div>
-                </div>
-            `).join('');
         }
 
         renderSite();
@@ -546,3 +563,4 @@
     </script>
 </body>
 </html>
+
