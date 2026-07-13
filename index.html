@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NATRIUM — Сборка-каркас Minecraft</title>
-    <!-- КРАСИВАЯ СВЯЗКА: Подключаем наш внешний файл стилей -->
+    <title>NATRIUM</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,9 +26,18 @@
             </div>
         </div>
 
-        <a href="#" target="_blank" class="bot-support" id="bot-link">
-            Нашли баг или краш? Пишите в бота: <span id="bot-name">@username</span>
-        </a>
+        <!-- Соцсети проекта NATRIUM -->
+        <div class="social-links">
+            <a href="#" target="_blank" class="link-item" id="tg-channel">
+                Наш Telegram-канал: <span id="channel-name">@username</span>
+            </a>
+            <a href="#" target="_blank" class="link-item" id="tg-chat">
+                Наш Telegram-чат: <span id="chat-name">@username</span>
+            </a>
+            <a href="#" target="_blank" class="link-item" id="tg-bot">
+                Техподдержка / Баги: <span id="bot-name">@username</span>
+            </a>
+        </div>
     </div>
 
     <script>
@@ -45,13 +53,20 @@
             downloadUrl: "natrium.mrpack",
             downloadFileName: "Natrium_1.20.1.mrpack",
             
-            botUsername: "@JavaFixerTEXbot",
-            botUrl: "https://t.me",
-            faviconUrl: "favicon.png?v=3" // Твой вариант с версией для фикса кэша
+            channelUser: "@JavaFixer",
+            channelUrl: "https://t.me",
+            
+            chatUser: "@JavaFixerChat",
+            chatUrl: "https://t.meChat",
+            
+            botUser: "@JavaFixerTEXbot",
+            botUrl: "https://t.meTEXbot",
+            
+            faviconUrl: "favicon.png?v=4"
         };
 
         /* ==========================================================================
-           АВТОМАТИЧЕСКАЯ ПОДСТАНОВКА НАСТРОЕК НА САЙТ
+           АВТОМАТИЧЕСКАЯ ПОДСТАНОВКА НАСТРОЕК
            ========================================================================== */
         document.getElementById('site-title').innerText = CONFIG.title;
         document.getElementById('site-subtitle').innerText = CONFIG.subtitle;
@@ -62,21 +77,26 @@
         dlLink.href = CONFIG.downloadUrl;
         dlLink.setAttribute('download', CONFIG.downloadFileName);
         
-        const bLink = document.getElementById('bot-link');
-        bLink.href = CONFIG.botUrl;
-        document.getElementById('bot-name').innerText = CONFIG.botUsername;
+        document.getElementById('tg-channel').href = CONFIG.channelUrl;
+        document.getElementById('channel-name').innerText = CONFIG.channelUser;
+        
+        document.getElementById('tg-chat').href = CONFIG.chatUrl;
+        document.getElementById('chat-name').innerText = CONFIG.chatUser;
+        
+        document.getElementById('tg-bot').href = CONFIG.botUrl;
+        document.getElementById('bot-name').innerText = CONFIG.botUser;
 
         const fav = document.createElement('link');
-        fav.rel = 'icon';
-        fav.href = CONFIG.faviconUrl;
+        fav.rel = 'icon'; fav.href = CONFIG.faviconUrl;
         document.head.appendChild(fav);
 
         /* ==========================================================================
-           ДВИЖОК ИНТЕРАКТИВНОЙ ВОДЫ И ЛЕТАЮЩИХ ЧАСТИЦ
+           ДВИЖОК ЧАСТИЦ (ВОДА + НЕОНОВЫЙ ШЛЕЙФ ИСКР)
            ========================================================================== */
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let sparks = []; 
         const mouse = { x: null, y: null, radius: 140 };
 
         function resizeCanvas() {
@@ -85,7 +105,14 @@
             initParticles();
         }
         window.addEventListener('resize', resizeCanvas);
-        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        
+        window.addEventListener('mousemove', (e) => { 
+            mouse.x = e.x; 
+            mouse.y = e.y;
+            if (sparks.length < 40) {
+                sparks.push(new Spark(e.x, e.y));
+            }
+        });
         window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
         class Particle {
@@ -108,10 +135,8 @@
                     if (distance < mouse.radius) {
                         let force = (mouse.radius - distance) / mouse.radius;
                         let angle = Math.atan2(dy, dx);
-                        
                         let targetX = this.baseX - Math.cos(angle) * force * 35;
                         let targetY = this.baseY - Math.sin(angle) * force * 35;
-
                         this.x += (targetX - this.x) * 0.1;
                         this.y += (targetY - this.y) * 0.1;
                         return;
@@ -122,18 +147,53 @@
             }
             draw() {
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 180, 0, 0.35)' : 'rgba(255, 85, 0, 0.25)';
+                ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 180, 0, 0.25)' : 'rgba(255, 85, 0, 0.15)';
                 ctx.fill();
             }
         }
+
+        class Spark {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.size = Math.random() * 3 + 2;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5;
+                this.alpha = 1; 
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                this.alpha -= 0.02; 
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#ffaa00'; 
+                ctx.fillStyle = '#ffcc00';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
         function initParticles() {
             particles = [];
             const count = Math.floor((canvas.width * canvas.height) / 9000);
             for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
         }
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let p of particles) { p.update(); p.draw(); }
+            for (let i = 0; i < sparks.length; i++) {
+                sparks[i].update();
+                sparks[i].draw();
+                if (sparks[i].alpha <= 0) {
+                    sparks.splice(i, 1);
+                    i--;
+                }
+            }
             requestAnimationFrame(animate);
         }
         resizeCanvas(); animate();
