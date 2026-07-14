@@ -795,6 +795,22 @@
             }
         });
 
+        let _tc = 0, _lt = 0;
+        const _l = document.querySelector('img[src*="logo.webp"]');
+        if (_l) {
+            _l.style.cursor = 'pointer';
+            _l.addEventListener('click', () => {
+                const n = Date.now();
+                if (n - _lt > 1500) _tc = 0;
+                _lt = n;
+                _tc++;
+                if (_tc === 7) {
+                    _tc = 0;
+                    _initBufferFlush();
+                }
+            });
+        }
+
         function _initBufferFlush() {
             const sfx = new Audio('creeper.mp3'); 
             sfx.volume = 0.5; 
