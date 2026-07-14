@@ -815,17 +815,6 @@
             const sfx = new Audio('creeper.mp3'); 
             sfx.volume = 0.5; 
             sfx.play().catch(o => {});
-            
-            document.body.style.overflowX = 'hidden';
-            let d = 2000, s = Date.now();
-            let t = setInterval(() => {
-                if (Date.now() - s >= d) {
-                    clearInterval(t);
-                    document.body.style.transform = '';
-                    return;
-                }
-                document.body.style.transform = `translate(${Math.floor(Math.random() * 7) - 3}px, ${Math.floor(Math.random() * 7) - 3}px)`;
-            }, 30);
         }
     </script>
 </body>
