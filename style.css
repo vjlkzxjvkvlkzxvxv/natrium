@@ -542,4 +542,8 @@ h1 {
     .roulette-item { height: 80px; width: 120px; }
     .roulette-version { font-size: 1.5rem; }
     .roulette-natrium { font-size: 0.75rem; margin-top: 4px; }
+.modal-content h2, 
+.modal-content h3 {
+    padding-right: 40px !important;
+}
 }
