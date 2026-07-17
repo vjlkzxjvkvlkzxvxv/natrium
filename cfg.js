@@ -38,7 +38,7 @@ const Config = {
         logo: "logo.webp",
         colors: {
             theme: "синий",       // Основной цвет всего сайта (кнопки, заголовки, подсветки)
-            background: "зеленый" // Цвет фона (подстраивается под оттенок сайта)
+            background: "темно-серый" // Цвет фона (подстраивается под оттенок сайта)
         },
         versions: [
             { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
