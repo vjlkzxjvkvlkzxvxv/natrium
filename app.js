@@ -4,11 +4,15 @@ rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
 rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
 
 if (!Config.FUNCTIONAL.isSiteEnabled) {
-    document.getElementById('app').style.display = 'none';
-    const maint = document.getElementById('maintenance');
-    maint.style.display = 'flex';
-    maint.textContent = Config.UI.maintenanceText;
-    throw new Error('Site disabled');
+    document.body.innerHTML = `
+        <div class="maintenance-screen">
+            <div class="logo-container maintenance-logo-container">
+                <img src="${Config.SITE.logo}" alt="Logo" class="logo maintenance-logo">
+            </div>
+            <div class="maintenance-text">${Config.UI.maintenanceText}</div>
+        </div>
+    `;
+    throw new Error('Maintenance Mode Active: Application render halted.');
 }
 
 if (!Config.FUNCTIONAL.isResponsive) {
@@ -132,10 +136,7 @@ function filterModsList(modsArray, query) {
     if (!query) return modsArray;
     return modsArray.filter(mod => {
         const modName = mod.name.toLowerCase();
-        // Теперь ищем вхождение строки в любой части названия
         if (modName.includes(query)) return true;
-        
-        // Поиск по транслиту (если нужно)
         for (const [rusKey, engValue] of Object.entries(Config.MODS.translit)) {
             if (rusKey.includes(query) && modName.includes(engValue)) return true;
         }
@@ -151,7 +152,6 @@ function openModsModal(versionKey) {
     const render = (query = '') => {
         const cleanQuery = query.trim().toLowerCase();
         let html = '';
-        
         for (const [category, modsArray] of Object.entries(targetMods)) {
             const filtered = filterModsList(modsArray, cleanQuery);
             if (filtered.length > 0) {
@@ -295,6 +295,27 @@ function renderSite() {
 
     document.querySelectorAll('.btn-mods[data-version]').forEach(btn => {
         btn.addEventListener('click', (e) => openModsModal(e.target.getAttribute('data-version')));
+    });
+
+    const instructionContainer = document.getElementById('instruction-container');
+    instructionContainer.innerHTML = `
+        <button id="btn-instruction" class="pill-button" style="width: auto; padding: 14px 40px; margin-bottom: 20px; font-weight: 800; font-size: 1.05rem;">
+            ${Config.INSTRUCTION.buttonText}
+        </button>
+        <div class="instruction-anim-box" id="instruction-anim-box">
+            <div class="instruction-inner">
+                <div class="instruction-content">
+                    <div class="instruction-title">${Config.INSTRUCTION.title}</div>
+                    <ol class="instruction-list">
+                        ${Config.INSTRUCTION.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('btn-instruction').addEventListener('click', () => {
+        document.getElementById('instruction-anim-box').classList.toggle('active');
     });
 
     const socialsContainer = document.getElementById('socials-container');
