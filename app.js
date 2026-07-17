@@ -132,7 +132,10 @@ function filterModsList(modsArray, query) {
     if (!query) return modsArray;
     return modsArray.filter(mod => {
         const modName = mod.name.toLowerCase();
+        // Теперь ищем вхождение строки в любой части названия
         if (modName.includes(query)) return true;
+        
+        // Поиск по транслиту (если нужно)
         for (const [rusKey, engValue] of Object.entries(Config.MODS.translit)) {
             if (rusKey.includes(query) && modName.includes(engValue)) return true;
         }
