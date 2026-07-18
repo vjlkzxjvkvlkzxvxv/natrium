@@ -1,76 +1,65 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" id="meta-viewport">
-    <meta name="description" content="" id="meta-desc">
-    <title id="head-title">NATRIUM</title>
+    <meta name="description" content="Natrium - идеальная сборка Minecraft с экстремальной оптимизацией. Скачайте лучшие моды для повышения FPS.">
+    <title>NATRIUM | Оптимизация</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
-        <div class="time-widget" id="realtime-widget"></div>
-        
-        <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
-        <button class="gear-settings-btn" id="gear-settings-btn" aria-label="Настройки темы">⚙</button>
-
-        <!-- Контейнер для высокопроизводительных искр -->
-        <div id="trail-container"></div>
-        
         <canvas id="atom-canvas"></canvas>
 
-        <div class="main-wrapper">
-            <div class="logo-container">
-                <img alt="Logo" class="logo" id="site-logo">
-            </div>
-
-            <h1 id="site-title"></h1>
-            <div class="subtitle" id="site-subtitle"></div>
-
-            <div class="cards-grid" id="versions-container"></div>
-            
-            <div class="instruction-wrapper" id="instruction-container"></div>
-            
-            <!-- Блок преимуществ сборки и честного дисклеймера -->
-            <section class="advantages-section fade-in-scroll" id="advantages-section">
-                <h2 class="advantages-main-title">Почему именно Natrium?</h2>
-                <div class="advantages-grid" id="advantages-grid"></div>
-                <div class="disclaimer-container" id="disclaimer-text"></div>
-            </section>
-            
-            <div class="bottom-links" id="socials-container"></div>
+        <div class="top-bar-controls">
+            <div class="time-widget" id="realtime-widget"></div>
+            <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
         </div>
 
-        <!-- Интерактивная плавающая панель кастомизации цвета и темы -->
+        <button class="floating-settings-btn" id="btn-open-settings" aria-label="Открыть настройки">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </button>
+
         <div class="settings-panel" id="settings-panel">
-            <div class="settings-panel-header">
-                <h3>Интерфейс Палитры</h3>
-                <button class="settings-panel-close" id="settings-panel-close">&times;</button>
+            <div class="settings-header">
+                <h3>Кастомизация</h3>
+                <button class="close-settings" id="btn-close-settings">&times;</button>
             </div>
-            <div class="settings-option">
+            
+            <div class="settings-block">
                 <label>Глобальная тема:</label>
-                <div class="theme-switch-wrapper">
-                    <span class="theme-label-text">Тёмная</span>
-                    <label class="switch">
-                        <input type="checkbox" id="theme-toggle">
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="theme-label-text">Светлая</span>
+                <div class="theme-toggle">
+                    <button id="theme-dark" class="active">Тёмная</button>
+                    <button id="theme-light">Светлая</button>
                 </div>
             </div>
-            <div class="settings-option">
-                <label>Выбор цвета (Спектр):</label>
-                <input type="color" id="custom-color-picker" class="color-picker-input">
+
+            <div class="settings-block">
+                <label>Акцентный цвет (HEX / RGB):</label>
+                <div class="color-picker-wrapper">
+                    <input type="color" id="native-color-picker">
+                    <input type="text" id="hex-rgb-input" placeholder="#ffaa00 или 255,170,0">
+                </div>
+                <div class="color-presets" id="color-presets"></div>
             </div>
-            <div class="settings-option">
-                <label>Код HEX:</label>
-                <input type="text" id="custom-color-hex" class="settings-text-input" placeholder="#ffaa00">
+        </div>
+
+        <div class="main-wrapper">
+            <div class="logo-container reveal">
+                <img alt="Natrium Logo" class="logo" id="site-logo">
             </div>
-            <div class="settings-option">
-                <label>Код RGB:</label>
-                <input type="text" id="custom-color-rgb" class="settings-text-input" placeholder="255, 170, 0">
-            </div>
-            <button class="btn-mods" style="margin-top: 10px;" id="reset-theme-btn">Сбросить настройки</button>
+
+            <h1 id="site-title" class="reveal"></h1>
+            <div class="subtitle reveal" id="site-subtitle"></div>
+
+            <div class="cards-grid reveal" id="versions-container"></div>
+            
+            <div class="instruction-wrapper reveal" id="instruction-container"></div>
+
+            <!-- НОВЫЙ БЛОК ПРЕИМУЩЕСТВ -->
+            <div class="advantages-wrapper reveal" id="advantages-container"></div>
+            
+            <div class="bottom-links reveal" id="socials-container"></div>
         </div>
 
         <div class="modal-overlay" id="mods-modal">
@@ -80,14 +69,14 @@
                     <button class="modal-close" id="mods-close-btn">&times;</button>
                 </div>
                 <div class="search-container">
-                    <input type="text" class="search-input" id="mods-search">
+                    <input type="text" class="search-input" id="mods-search" aria-label="Поиск мода">
                 </div>
                 <div class="mods-list" id="modal-mods-list"></div>
             </div>
         </div>
 
         <div class="modal-overlay" id="roulette-modal">
-            <div class="modal-window" style="max-width: 550px;">
+            <div class="modal-window roulette-window">
                 <div class="modal-header">
                     <div class="modal-title" id="roulette-modal-title"></div>
                     <button class="modal-close" id="roulette-close-btn">&times;</button>
@@ -110,10 +99,10 @@
         </div>
 
         <div class="modal-overlay" id="download-modal">
-            <div class="modal-window" style="max-width: 450px; text-align: center;">
-                <div class="modal-header" style="justify-content: center; position: relative;">
-                    <div class="modal-title" id="download-modal-title" style="font-size: 1.4rem;"></div>
-                    <button class="modal-close" id="download-close-btn" style="position: absolute; right: 0; top: -10px;">&times;</button>
+            <div class="modal-window download-window">
+                <div class="modal-header download-header">
+                    <div class="modal-title" id="download-modal-title"></div>
+                    <button class="modal-close" id="download-close-btn">&times;</button>
                 </div>
                 <div id="download-modal-content"></div>
             </div>
