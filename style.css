@@ -20,7 +20,6 @@ body {
     overflow-x: hidden;
     position: relative;
     padding: 60px 20px 40px 20px;
-    transition: background-color 0.5s ease;
 }
 
 .maintenance-screen {
@@ -63,15 +62,12 @@ body {
     justify-content: center;
 }
 
-/* ЖЕЛЕЗОБЕТОННЫЙ ФИКС КАНВАСА */
 #atom-canvas {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
     pointer-events: none;
 }
@@ -91,7 +87,7 @@ body {
     top: 20px;
     left: 20px;
     background: rgba(16, 16, 20, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 170, 0, 0.15);
     padding: 10px 18px;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -112,8 +108,8 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.2) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 204, 0, 0.1) 0%, rgba(255, 85, 0, 0.1) 100%);
+    border: 1px solid rgba(255, 170, 0, 0.3);
     padding: 10px 20px;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -123,13 +119,13 @@ body {
     z-index: 10;
     cursor: pointer;
     letter-spacing: 0.5px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(255, 85, 0, 0.05);
 }
 
 .btn-roulette-trigger:hover {
     transform: translateY(-2px);
-    border-color: var(--primary);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 170, 0, 0.6);
+    box-shadow: 0 12px 30px rgba(255, 85, 0, 0.2);
     color: #ffffff;
 }
 
@@ -145,7 +141,7 @@ body {
 
 .logo-container:hover {
     transform: scale(1.06) rotate(2deg);
-    box-shadow: 0 0 40px var(--primary);
+    box-shadow: 0 0 40px rgba(255, 140, 0, 0.6);
 }
 
 .logo { 
@@ -162,7 +158,7 @@ h1 {
     background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(0 4px 20px rgba(255, 85, 0, 0.4));
     text-transform: uppercase;
 }
 
@@ -187,7 +183,7 @@ h1 {
 
 .card {
     background: rgba(16, 16, 20, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 183, 0, 0.2);
     border-radius: 28px;
     padding: 40px 30px;
     position: relative;
@@ -201,8 +197,8 @@ h1 {
 
 .card:hover {
     transform: translateY(-8px);
-    border-color: var(--primary);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 183, 0, 0.5);
+    box-shadow: 0 30px 60px rgba(255, 85, 0, 0.15);
 }
 
 .card-title {
@@ -241,7 +237,7 @@ h1 {
     align-items: center; 
     justify-content: center; 
     width: 100%;
-    background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
+    background: linear-gradient(135deg, var(--grad-start) 0%, #ff6600 100%);
     color: #080809; 
     text-decoration: none; 
     padding: 16px 32px; 
@@ -250,7 +246,7 @@ h1 {
     font-weight: 800; 
     letter-spacing: 0.5px; 
     margin-bottom: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 85, 0, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: none;
     cursor: pointer;
@@ -258,7 +254,7 @@ h1 {
 
 .btn-download:hover { 
     transform: scale(1.03); 
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6); 
+    box-shadow: 0 12px 35px rgba(255, 85, 0, 0.5); 
 }
 
 .btn-mods {
@@ -267,7 +263,7 @@ h1 {
     justify-content: center; 
     width: 100%;
     background: rgba(255, 255, 255, 0.03); 
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 170, 0, 0.3);
     color: var(--primary); 
     text-decoration: none; 
     padding: 12px 24px; 
@@ -279,8 +275,8 @@ h1 {
 }
 
 .btn-mods:hover { 
-    background: rgba(255, 255, 255, 0.08); 
-    border-color: var(--primary); 
+    background: rgba(255, 170, 0, 0.1); 
+    border-color: rgba(255, 170, 0, 0.6); 
     color: #ffffff; 
 }
 
@@ -312,7 +308,7 @@ h1 {
 
 .instruction-content {
     background: rgba(16, 16, 20, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 170, 0, 0.3);
     border-radius: 24px;
     padding: 30px;
     text-align: left;
@@ -326,7 +322,7 @@ h1 {
     font-size: 1.3rem;
     font-weight: 800;
     margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 170, 0, 0.2);
     padding-bottom: 15px;
 }
 
@@ -380,8 +376,8 @@ h1 {
 }
 
 .pill-button:hover { 
-    background-color: rgba(255, 255, 255, 0.05); 
-    border-color: var(--primary); 
+    background-color: rgba(255, 183, 0, 0.04); 
+    border-color: rgba(255, 183, 0, 0.3); 
     color: #ffffff; 
 }
 
@@ -410,7 +406,7 @@ h1 {
 
 .modal-window {
     background: rgba(18, 18, 24, 0.95); 
-    border: 2px solid rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 170, 0, 0.25);
     border-radius: 32px; 
     width: 90%; 
     max-width: 650px; 
@@ -461,8 +457,8 @@ h1 {
 }
 
 .modal-close:hover { 
-    background: rgba(255, 255, 255, 0.1); 
-    border-color: var(--primary); 
+    background: rgba(255, 85, 0, 0.2); 
+    border-color: rgba(255, 85, 0, 0.4); 
     color: #ffffff; 
 }
 
@@ -474,7 +470,7 @@ h1 {
 .search-input {
     width: 100%; 
     background: rgba(0, 0, 0, 0.4); 
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 170, 0, 0.2);
     border-radius: 14px; 
     padding: 14px 20px; 
     color: #ffffff; 
@@ -484,8 +480,8 @@ h1 {
 }
 
 .search-input:focus { 
-    border-color: var(--primary); 
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05); 
+    border-color: rgba(255, 170, 0, 0.6); 
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.15); 
 }
 
 .mods-list { 
@@ -496,8 +492,8 @@ h1 {
 
 .mods-list::-webkit-scrollbar { width: 6px; }
 .mods-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
-.mods-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-.mods-list::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+.mods-list::-webkit-scrollbar-thumb { background: rgba(255, 170, 0, 0.3); border-radius: 10px; }
+.mods-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 170, 0, 0.6); }
 
 .mod-category-title {
     font-size: 1.15rem;
@@ -506,7 +502,7 @@ h1 {
     margin: 20px 0 10px 0;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 170, 0, 0.2);
     padding-bottom: 5px;
 }
 
@@ -525,7 +521,7 @@ h1 {
     gap: 4px;
 }
 
-.mod-item:hover { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); }
+.mod-item:hover { background: rgba(255,170,0,0.02); border-color: rgba(255,170,0,0.15); }
 .mod-name { font-weight: 700; color: var(--grad-start); font-size: 1.1rem; }
 .mod-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
 
@@ -534,8 +530,8 @@ h1 {
     width: 100%; 
     max-width: 500px; 
     height: 110px;
-    background: rgba(0, 0, 0, 0.4); 
-    border: 2px solid rgba(255, 255, 255, 0.05);
+    background: #0d0d11; 
+    border: 2px solid rgba(255, 170, 0, 0.2);
     border-radius: 20px; 
     overflow: hidden; 
     margin: 20px auto;
@@ -551,7 +547,7 @@ h1 {
     height: 100%; 
     background: var(--primary); 
     z-index: 10;
-    box-shadow: 0 0 15px var(--grad-end); 
+    box-shadow: 0 0 15px #ff5500; 
     pointer-events: none;
 }
 
@@ -574,7 +570,7 @@ h1 {
     align-items: center; 
     justify-content: center;
     background: linear-gradient(135deg, rgba(30, 30, 40, 0.9), rgba(15, 15, 20, 0.95)); 
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 170, 0, 0.15);
     border-radius: 14px; 
     margin: 0 5px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.4);
@@ -597,7 +593,7 @@ h1 {
     margin-top: 5px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
 }
 
 .roulette-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 15px; }
@@ -640,4 +636,5 @@ h1 {
     .roulette-item { height: 80px; width: 120px; }
     .roulette-version { font-size: 1.5rem; }
     .roulette-natrium { font-size: 0.75rem; margin-top: 4px; }
+    .modal-content h2, .modal-content h3 { padding-right: 40px !important; }
 }
