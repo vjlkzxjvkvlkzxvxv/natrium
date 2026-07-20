@@ -1,19 +1,9 @@
-// =====================================================================
-// СПИСОК ССЫЛОК НА ЛАУНЧЕРЫ (Управляются отсюда)
-// =====================================================================
-const LauncherLinks = {
-    ATLauncher: "https://atlauncher.com/",
-    ElyPrismLauncher: "https://elyprismlauncher.github.io/",
-    PrismLauncher: "https://prismlauncher.org/",
-    ModrinthApp: "https://modrinth.com/app"
-};
-
 const Config = {
     // ---------------------------------------------------
     // 1. ФУНКЦИОНАЛЬНЫЕ НАСТРОЙКИ
     // ---------------------------------------------------
     FUNCTIONAL: {
-        isSiteEnabled: true,             // Вкл/выкл сайт (false = полная блокировка и вывод экрана тех.работ)
+        isSiteEnabled: false,             // Вкл/выкл сайт (false = полная блокировка и вывод экрана тех.работ)
         isResponsive: true,              // Адаптивность для мобильных
         showTimeWidget: true,            // Отображать ли виджет времени
         showSocialLinks: true,           // Отображать ли ссылки на соцсети внизу
@@ -25,20 +15,17 @@ const Config = {
     },
 
     // ---------------------------------------------------
-    // 2. НАСТРОЙКИ ВНЕШНЕГО ВИДА (ТЕПЕРЬ ЧЕЛОВЕЧЕСКИМИ СЛОВАМИ)
+    // 2. НАСТРОЙКИ САЙТА (РЕСУРСЫ И СТИЛИ)
     // ---------------------------------------------------
-    /*
-        Доступные цвета: 
-        "золотой", "красный", "зеленый", "синий", "неоновый", 
-        "фиолетовый", "белый", "темно-серый", "черный"
-        (Просто впишите нужное слово, сайт сам подберет градиенты и оттенки)
-    */
     SITE: {
         favicon: "favicon.png?v=5",
         logo: "logo.webp",
         colors: {
-            theme: "синий",       // Основной цвет всего сайта (кнопки, заголовки, подсветки)
-            background: "темно-серый" // Цвет фона (подстраивается под оттенок сайта)
+            primary: "#ffaa00",
+            gradientStart: "#ffcc00",
+            gradientEnd: "#ff5500",
+            background: "#050506",
+            modalBg: "rgba(18, 18, 24, 0.95)"
         },
         versions: [
             { versionNum: "1.20.1", fileType: "Модпак .mrpack", link: "./Natrium_1.20.1.mrpack", fileName: "Natrium_1.20.1.mrpack" },
@@ -53,18 +40,7 @@ const Config = {
     },
 
     // ---------------------------------------------------
-    // 3. НАСТРОЙКИ ТРЕЙЛА МЫШИ (ИСКРЫ)
-    // ---------------------------------------------------
-    TRAIL: {
-        color: "золотой",        // Цвет искр (используйте те же слова, что и для темы сайта)
-        sparksPerStep: 2,        // Количество создаваемых частиц за одно движение мыши
-        maxSparks: 45,           // Лимит искр на экране
-        decaySpeed: 0.015,       // Базовая скорость затухания искр
-        maxSize: 3               // Базовый максимальный размер искры
-    },
-
-    // ---------------------------------------------------
-    // 4. ТЕКСТЫ И ИНТЕРФЕЙС
+    // 3. ТЕКСТЫ И ИНТЕРФЕЙС
     // ---------------------------------------------------
     UI: {
         pageTitle: "NATRIUM",
@@ -93,37 +69,26 @@ const Config = {
             rouletteTitleHighlight: "NATRIUM",
             versionPrefix: "Версия",
             rouletteItemHighlight: "NATRIUM",
-            downloadTitlePrefix: "Начало загрузки:",
-            
-            // Настройки модального окна загрузки
-            downloadInfoText: "Загрузка файла начнется автоматически. Пока вы ждете, присоединяйтесь к нашим сообществам!",
-            downloadLinks: [
-                { text: "Telegram Channel", url: "https://t.me/NatriumProject", type: "primary" },
-                { text: "Telegram Channel Автора", url: "https://t.me/JavaFixer", type: "secondary" }
-            ]
+            downloadTitlePrefix: "Начало загрузки:"
         }
     },
 
     // ---------------------------------------------------
-    // 5. ИНСТРУКЦИЯ ПО УСТАНОВКЕ
+    // 4. ИНСТРУКЦИЯ ПО УСТАНОВКЕ
     // ---------------------------------------------------
     INSTRUCTION: {
         buttonText: "Как установить",
         title: "Как установить сборку Natrium:",
         steps: [
             "Скачай файл сборки в формате .mrpack под нужную версию с нашего сайта.",
-            `Скачай и установи современный лаунчер с поддержкой Modrinth.<br>
-            <ul style='margin-top: 8px; padding-left: 20px; list-style-type: disc;'>
-                <li style='margin-bottom: 4px;'>Для лицензии: <a href='${LauncherLinks.PrismLauncher}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>Prism Launcher</a> или официальный <a href='${LauncherLinks.ModrinthApp}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>Modrinth App</a>.</li>
-                <li>Для пираток/офлайн: <a href='${LauncherLinks.ElyPrismLauncher}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>Ely Prism Launcher</a> или <a href='${LauncherLinks.ATLauncher}' target='_blank' style='color: var(--primary); text-decoration: none; font-weight: bold;'>ATLauncher</a>.</li>
-            </ul>`,
+            "Скачай и установи современный лаунчер с поддержкой Modrinth (например: Prism Launcher, Modrinth App, ATLauncher или Pinecone).",
             "В лаунчере нажмите кнопку «Добавить экземпляр» (или «Импорт») и выберите скачанный ранее файл .mrpack.",
             "Дождись, пока лаунчер автоматически скачает все необходимые моды из конфига сборки, и запускай игру."
         ]
     },
 
     // ---------------------------------------------------
-    // 6. МОДЫ (С КАТЕГОРИЯМИ)
+    // 5. МОДЫ (С КАТЕГОРИЯМИ)
     // ---------------------------------------------------
     MODS: {
         translit: {
