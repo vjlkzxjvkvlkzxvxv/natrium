@@ -14,6 +14,17 @@ if (Config.EXPERIMENTS.deleteAllFilesMode) {
     document.getElementById('app').innerHTML = '';
 }
 
+if (Config.EXPERIMENTS.rainbowMode) {
+    const style = document.createElement('style');
+    style.innerHTML = '@keyframes rainbow { 0%{filter: hue-rotate(0deg);} 100%{filter: hue-rotate(360deg);} } body { animation: rainbow 8s linear infinite; }';
+    document.head.appendChild(style);
+}
+
+if (Config.EXPERIMENTS.disableCanvasBackground) {
+    const atomCanvas = document.getElementById('atom-canvas');
+    if (atomCanvas) atomCanvas.style.display = 'none';
+}
+
 if (!Config.FUNCTIONAL.isSiteEnabled) {
     document.body.innerHTML = `
         <div class="maintenance-screen">
@@ -51,15 +62,15 @@ function updateTime() {
 }
 
 const canvas = document.getElementById('atom-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 let particles = []; 
 let sparks = []; 
 const mouse = { x: null, y: null, radius: 140 };
-let isMobile = false;
+const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 function resizeCanvas() { 
+    if (!canvas || Config.EXPERIMENTS.disableCanvasBackground) return;
     const dpr = window.devicePixelRatio || 1;
-    isMobile = window.innerWidth <= 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
     canvas.width = window.innerWidth * dpr; 
     canvas.height = window.innerHeight * dpr; 
@@ -70,14 +81,15 @@ function resizeCanvas() {
     initParticles(); 
 }
 
-window.addEventListener('resize', resizeCanvas);
-window.addEventListener('mousemove', (e) => { 
-    if (isMobile) return; 
-    mouse.x = e.clientX; 
-    mouse.y = e.clientY;
-    if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
-});
-window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+if (!isMobile) {
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('mousemove', (e) => { 
+        mouse.x = e.clientX; 
+        mouse.y = e.clientY;
+        if (sparks.length < 45) sparks.push(new Spark(e.clientX, e.clientY));
+    });
+    window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+}
 
 class Particle {
     constructor(x, y) {
@@ -124,19 +136,23 @@ class Spark {
 }
 
 function initParticles() {
+    if (!ctx || Config.EXPERIMENTS.disableCanvasBackground) return;
     particles = []; 
-    const density = isMobile ? 30000 : 9000;
+    const density = isMobile ? 35000 : 9000;
     const count = Math.floor((window.innerWidth * window.innerHeight) / density);
     for (let i = 0; i < count; i++) particles.push(new Particle(Math.random() * window.innerWidth, Math.random() * window.innerHeight));
 }
 
 function animate() {
+    if (!ctx || Config.EXPERIMENTS.disableCanvasBackground) return;
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     for (let p of particles) { p.update(); p.draw(); }
-    for (let i = sparks.length - 1; i >= 0; i--) { 
-        sparks[i].update(); 
-        sparks[i].draw(); 
-        if (sparks[i].alpha <= 0) { sparks.splice(i, 1); } 
+    if (!isMobile) {
+        for (let i = sparks.length - 1; i >= 0; i--) { 
+            sparks[i].update(); 
+            sparks[i].draw(); 
+            if (sparks[i].alpha <= 0) { sparks.splice(i, 1); } 
+        }
     }
     requestAnimationFrame(animate);
 }
@@ -151,14 +167,10 @@ function debounce(func, timeout = Config.FUNCTIONAL.searchDebounceDelay) {
 
 function filterModsList(modsArray, query) {
     if (!query) return modsArray;
-    return modsArray.filter(mod => {
-        const modName = mod.name.toLowerCase();
-        if (modName.includes(query)) return true;
-        for (const [rusKey, engValue] of Object.entries(Config.MODS.translit)) {
-            if (rusKey.includes(query) && modName.includes(engValue)) return true;
-        }
-        return false;
-    });
+    return modsArray.filter(mod => 
+        mod.name.toLowerCase().includes(query) || 
+        mod.desc.toLowerCase().includes(query)
+    );
 }
 
 function openModsModal(versionKey) { 
@@ -305,29 +317,6 @@ function renderSite() {
         </div>
     `).join('');
 
-    const whyContainer = document.getElementById('why-container');
-    whyContainer.innerHTML = `
-        <h2 class="why-title">${Config.WHY_NATRIUM.title}</h2>
-        <div class="why-grid">
-            ${Config.WHY_NATRIUM.facts.map(fact => `
-                <div class="why-card">
-                    <div class="why-card-title">${fact.title}</div>
-                    <div class="why-card-desc">${fact.desc}</div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-
-    document.querySelectorAll('.btn-trigger-dl').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            openDownloadModal(e.target.dataset.ver, e.target.dataset.link, e.target.dataset.file);
-        });
-    });
-
-    document.querySelectorAll('.btn-mods[data-version]').forEach(btn => {
-        btn.addEventListener('click', (e) => openModsModal(e.target.getAttribute('data-version')));
-    });
-
     const instructionContainer = document.getElementById('instruction-container');
     instructionContainer.innerHTML = `
         <button id="btn-instruction" class="pill-button" style="width: auto; padding: 14px 40px; margin-bottom: 20px; font-weight: 800; font-size: 1.05rem;">
@@ -349,6 +338,35 @@ function renderSite() {
         document.getElementById('instruction-anim-box').classList.toggle('active');
     });
 
+    const whyContainer = document.getElementById('why-container');
+    whyContainer.innerHTML = `
+        <div class="fps-notice-box">
+            <div class="fps-notice-icon">⚡</div>
+            <div class="fps-notice-text">
+                <strong>Обратите внимание:</strong> прирост производительности индивидуален для каждого ПК. В зависимости от вашей видеокарты, процессора и установленных драйверов FPS может ощутимо вырасти, а в некоторых случаях остаться прежним.
+            </div>
+        </div>
+        <h2 class="why-title">${Config.WHY_NATRIUM.title}</h2>
+        <div class="why-grid">
+            ${Config.WHY_NATRIUM.facts.map(fact => `
+                <div class="why-card">
+                    <div class="why-card-title">${fact.title}</div>
+                    <div class="why-card-desc">${fact.desc}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    document.querySelectorAll('.btn-trigger-dl').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            openDownloadModal(e.target.dataset.ver, e.target.dataset.link, e.target.dataset.file);
+        });
+    });
+
+    document.querySelectorAll('.btn-mods[data-version]').forEach(btn => {
+        btn.addEventListener('click', (e) => openModsModal(e.target.getAttribute('data-version')));
+    });
+
     const socialsContainer = document.getElementById('socials-container');
     if(Config.FUNCTIONAL.showSocialLinks) {
         socialsContainer.innerHTML = Config.SITE.socials.map(s => `
@@ -365,28 +383,32 @@ window.addEventListener('click', (e) => {
     if (e.target === document.getElementById('download-modal')) closeDownloadModal();
 });
 
-let _ib = [];
-window.addEventListener('keydown', (e) => {
-    _ib.push(e.keyCode);
-    if (_ib.length > 7) _ib.shift();
-    if (_ib.join(',') === Config.FUNCTIONAL.easterEggCode) {
-        _initBufferFlush();
-    }
-});
+if (!isMobile) {
+    let _ib = [];
+    window.addEventListener('keydown', (e) => {
+        _ib.push(e.keyCode);
+        if (_ib.length > 7) _ib.shift();
+        if (_ib.join(',') === Config.FUNCTIONAL.easterEggCode) {
+            _initBufferFlush();
+        }
+    });
 
-let _tc = 0, _lt = 0;
-const _l = document.getElementById('site-logo');
-_l.style.cursor = 'pointer';
-_l.addEventListener('click', () => {
-    const n = Date.now();
-    if (n - _lt > 1500) _tc = 0;
-    _lt = n;
-    _tc++;
-    if (_tc === Config.FUNCTIONAL.easterEggClicks) {
-        _tc = 0;
-        _initBufferFlush();
+    let _tc = 0, _lt = 0;
+    const _l = document.getElementById('site-logo');
+    if (_l) {
+        _l.style.cursor = 'pointer';
+        _l.addEventListener('click', () => {
+            const n = Date.now();
+            if (n - _lt > 1500) _tc = 0;
+            _lt = n;
+            _tc++;
+            if (_tc === Config.FUNCTIONAL.easterEggClicks) {
+                _tc = 0;
+                _initBufferFlush();
+            }
+        });
     }
-});
+}
 
 function _initBufferFlush() {
     if(typeof CREEPER_SOUND_BASE64 !== 'undefined') {
