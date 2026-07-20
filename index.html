@@ -1,75 +1,31 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" id="meta-viewport">
-    <meta name="description" content="Natrium - идеальная сборка Minecraft с экстремальной оптимизацией.">
     <title>NATRIUM</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
+        <div class="time-widget" id="realtime-widget"></div>
+        <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
+
         <canvas id="atom-canvas"></canvas>
 
-        <div class="top-bar-controls">
-            <div class="time-widget" id="realtime-widget"></div>
-            <button class="btn-roulette-trigger" id="btn-roulette-open"></button>
-        </div>
-
-        <button class="floating-settings-btn" id="btn-open-settings">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        </button>
-
-        <div class="settings-panel" id="settings-panel">
-            <div class="settings-header">
-                <h3>Кастомизация</h3>
-                <button class="close-settings" id="btn-close-settings">&times;</button>
-            </div>
-            
-            <div class="settings-block">
-                <label>Глобальная тема:</label>
-                <div class="theme-toggle">
-                    <button id="theme-dark" class="active">Тёмная</button>
-                    <button id="theme-light">Светлая</button>
-                </div>
-            </div>
-
-            <div class="settings-block">
-                <label>Акцентный цвет:</label>
-                <div class="custom-color-picker">
-                    <div class="color-preview-row">
-                        <div class="color-preview" id="color-preview"></div>
-                        <input type="text" id="hex-rgb-input" placeholder="#ffaa00 или 255,170,0">
-                    </div>
-                    <div class="rgb-sliders">
-                        <div class="slider-row"><span class="r-label">R</span><input type="range" id="r-slider" min="0" max="255"></div>
-                        <div class="slider-row"><span class="g-label">G</span><input type="range" id="g-slider" min="0" max="255"></div>
-                        <div class="slider-row"><span class="b-label">B</span><input type="range" id="b-slider" min="0" max="255"></div>
-                    </div>
-                </div>
-                <div class="color-presets" id="color-presets"></div>
-            </div>
-        </div>
-
         <div class="main-wrapper">
-            <div class="logo-container reveal">
-                <img alt="Natrium Logo" class="logo" id="site-logo">
+            <div class="logo-container">
+                <img alt="Logo" class="logo" id="site-logo">
             </div>
 
-            <h1 id="site-title" class="reveal"></h1>
-            <div class="subtitle reveal" id="site-subtitle"></div>
+            <h1 id="site-title"></h1>
+            <div class="subtitle" id="site-subtitle"></div>
 
-            <div class="cards-grid reveal" id="versions-container"></div>
+            <div class="cards-grid" id="versions-container"></div>
             
-            <div class="instruction-wrapper reveal" id="instruction-container"></div>
-
-            <div class="advantages-wrapper reveal" id="advantages-container"></div>
+            <div class="instruction-wrapper" id="instruction-container"></div>
             
-            <div class="bottom-links reveal" id="socials-container"></div>
+            <div class="bottom-links" id="socials-container"></div>
         </div>
 
         <div class="modal-overlay" id="mods-modal">
@@ -86,7 +42,7 @@
         </div>
 
         <div class="modal-overlay" id="roulette-modal">
-            <div class="modal-window roulette-window">
+            <div class="modal-window" style="max-width: 550px;">
                 <div class="modal-header">
                     <div class="modal-title" id="roulette-modal-title"></div>
                     <button class="modal-close" id="roulette-close-btn">&times;</button>
@@ -109,11 +65,12 @@
         </div>
 
         <div class="modal-overlay" id="download-modal">
-            <div class="modal-window download-window">
-                <div class="modal-header download-header">
-                    <div class="modal-title" id="download-modal-title"></div>
-                    <button class="modal-close" id="download-close-btn">&times;</button>
+            <div class="modal-window" style="max-width: 450px; text-align: center;">
+                <div class="modal-header" style="justify-content: center; position: relative;">
+                    <div class="modal-title" id="download-modal-title" style="font-size: 1.4rem;"></div>
+                    <button class="modal-close" id="download-close-btn" style="position: absolute; right: 0; top: -10px;">&times;</button>
                 </div>
+                <!-- Контент модального окна загрузки генерируется через app.js из конфига -->
                 <div id="download-modal-content"></div>
             </div>
         </div>
