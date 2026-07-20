@@ -3,6 +3,8 @@ rootStyle.setProperty('--primary', Config.SITE.colors.primary);
 rootStyle.setProperty('--grad-start', Config.SITE.colors.gradientStart);
 rootStyle.setProperty('--grad-end', Config.SITE.colors.gradientEnd);
 
+let currentModalVersion = null; // Текущая версия в окне списка модов
+
 if (Config.EXPERIMENTS.hideAllText) {
     document.documentElement.style.color = 'transparent';
     const style = document.createElement('style');
@@ -174,6 +176,7 @@ function filterModsList(modsArray, query) {
 }
 
 function openModsModal(versionKey) { 
+    currentModalVersion = versionKey;
     const targetMods = Config.MODS[versionKey] || {};
     const modalModsList = document.getElementById('modal-mods-list');
     const searchInput = document.getElementById('mods-search');
@@ -304,6 +307,7 @@ function renderSite() {
     document.getElementById('btn-spin').textContent = Config.UI.buttons.spin;
     document.getElementById('btn-spin-again').textContent = Config.UI.buttons.spinAgain;
     document.getElementById('btn-roulette-home').textContent = Config.UI.buttons.home;
+    document.getElementById('btn-copy-mods').textContent = Config.UI.buttons.copyList;
     
     const versionsContainer = document.getElementById('versions-container');
     versionsContainer.innerHTML = Config.SITE.versions.map(v => `
@@ -381,6 +385,25 @@ window.addEventListener('click', (e) => {
     if (e.target === document.getElementById('mods-modal')) closeModsModal();
     if (e.target === document.getElementById('roulette-modal')) closeRouletteModal();
     if (e.target === document.getElementById('download-modal')) closeDownloadModal();
+});
+
+document.getElementById('btn-copy-mods').addEventListener('click', () => {
+    if (!currentModalVersion) return;
+    const targetMods = Config.MODS[currentModalVersion] || {};
+    let textToCopy = '';
+    
+    for (const modsArray of Object.values(targetMods)) {
+        for (const mod of modsArray) {
+            textToCopy += mod.name + '\n';
+        }
+    }
+    
+    navigator.clipboard.writeText(textToCopy.trim()).then(() => {
+        const btn = document.getElementById('btn-copy-mods');
+        const origText = btn.textContent;
+        btn.textContent = 'Скопировано!';
+        setTimeout(() => { btn.textContent = origText; }, 2000);
+    }).catch(err => console.error('Ошибка копирования:', err));
 });
 
 if (!isMobile) {
